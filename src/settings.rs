@@ -217,6 +217,8 @@ pub struct Settings {
     pub export_quality: u8,
     pub export_max_edge: u32,
     pub export_suffix: String,
+    pub auto_update: bool,
+    pub last_update_check: i64,
 }
 
 impl Default for Settings {
@@ -244,6 +246,8 @@ impl Default for Settings {
             export_quality: 92,
             export_max_edge: 0,
             export_suffix: "_edit".into(),
+            auto_update: true,
+            last_update_check: 0,
         }
     }
 }

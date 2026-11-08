@@ -92,6 +92,8 @@ pub enum Msg {
     PresetThumbs { generation: u64, items: Vec<(String, RgbaImage)> },
     BatchDone(Result<String, String>),
     Imported(Result<(Vec<Preset>, usize), String>),
+    UpdateChecked { manual: bool, result: Result<Option<crate::updater::Release>, String> },
+    UpdateInstalled(Result<PathBuf, String>),
 }
 
 #[derive(Clone)]
@@ -268,6 +270,22 @@ impl Workers {
         std::thread::spawn(move || {
             let r = crate::batch::run(&job, &progress);
             me.send(Msg::BatchDone(r));
+        });
+    }
+
+    pub fn check_update(&self, manual: bool) {
+        let me = self.clone();
+        std::thread::spawn(move || {
+            let result = crate::updater::check();
+            me.send(Msg::UpdateChecked { manual, result });
+        });
+    }
+
+    pub fn install_update(&self, rel: crate::updater::Release) {
+        let me = self.clone();
+        std::thread::spawn(move || {
+            let r = crate::updater::install(&rel);
+            me.send(Msg::UpdateInstalled(r));
         });
     }
 

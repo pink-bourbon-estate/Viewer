@@ -153,6 +153,9 @@ pub struct App {
     pub on_top: bool,
     pub palette_note: Option<String>,
     pub max_tex: usize,
+    pub update: Option<crate::updater::Release>,
+    pub updating: bool,
+    pub checking_update: bool,
 }
 
 pub fn color32(c: [u8; 3]) -> Color32 {
@@ -253,7 +256,16 @@ impl App {
             on_top: false,
             palette_note,
             max_tex: 8192,
+            update: None,
+            updating: false,
+            checking_update: false,
         };
+        // Quietly look for a newer build at most every 6 hours.
+        let now = chrono::Utc::now().timestamp();
+        if app.s.auto_update && now - app.s.last_update_check > 6 * 3600 {
+            app.s.last_update_check = now;
+            app.workers.check_update(false);
+        }
         if let Some(p) = open.into_iter().next() {
             // Opened from the file manager: show that image straight away.
             if p.is_file() {
@@ -668,6 +680,42 @@ impl App {
                     let keep = self.img.as_ref().map(|c| c.path.clone());
                     self.pending_open = keep.filter(|p| p.exists());
                     self.refresh_listing();
+                }
+                Msg::UpdateChecked { manual, result } => {
+                    self.checking_update = false;
+                    match result {
+                        Ok(Some(rel)) => {
+                            if manual {
+                                self.toast(ctx, format!("{} is available — click Update in the toolbar.", rel.title));
+                            }
+                            self.update = Some(rel);
+                        }
+                        Ok(None) => {
+                            if manual {
+                                self.toast(ctx, format!("Viewer is up to date ({}).", crate::updater::version_label()));
+                            }
+                        }
+                        Err(e) => {
+                            if manual {
+                                self.toast(ctx, e);
+                            }
+                        }
+                    }
+                }
+                Msg::UpdateInstalled(r) => {
+                    self.updating = false;
+                    match r {
+                        Ok(exe) => {
+                            self.s.save();
+                            self.lib.save_if_dirty();
+                            let open = self.img.as_ref().map(|i| i.path.clone());
+                            match crate::updater::relaunch(&exe, open.as_deref()) {
+                                Ok(()) => ctx.send_viewport_cmd(egui::ViewportCommand::Close),
+                                Err(e) => self.toast(ctx, e),
+                            }
+                        }
+                        Err(e) => self.toast(ctx, format!("Update failed: {e}")),
+                    }
                 }
                 Msg::Imported(r) => {
                     self.importing = false;
@@ -1173,6 +1221,38 @@ impl App {
         ui.label(RichText::new("Right-click a panel tab to move it.").small().color(theme::DIM));
     }
 
+    fn help_menu(&mut self, ui: &mut Ui) {
+        ui.label(RichText::new(format!("Viewer {}", crate::updater::version_label())).color(theme::DIM));
+        ui.separator();
+        if ui.button("Shortcuts  (F1)").clicked() {
+            self.show_help = true;
+            ui.close();
+        }
+        let label = if self.checking_update { "Checking…" } else { "Check for updates" };
+        if ui.add_enabled(!self.checking_update && !self.updating, egui::Button::new(label)).clicked() {
+            self.checking_update = true;
+            self.s.last_update_check = chrono::Utc::now().timestamp();
+            self.workers.check_update(true);
+            ui.close();
+        }
+        ui.checkbox(&mut self.s.auto_update, "Check for updates automatically");
+        if let Some(rel) = &self.update
+            && ui.button("What's new…").clicked()
+        {
+            crate::assoc::open_external(std::path::Path::new(&rel.page));
+            ui.close();
+        }
+        ui.separator();
+        if ui.button("Make Viewer the default image viewer").clicked() {
+            let msg = match crate::assoc::register() {
+                Ok(m) | Err(m) => m,
+            };
+            let ctx = ui.ctx().clone();
+            self.toast(&ctx, msg);
+            ui.close();
+        }
+    }
+
     fn status_bar(&mut self, ui: &mut Ui) {
         ui.horizontal_centered(|ui| {
             let imgs = self.files.iter().filter(|e| !e.is_dir).count();
@@ -1247,8 +1327,15 @@ impl eframe::App for App {
                 ui.horizontal_centered(|ui| {
                     self.toolbar(ui);
                     ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                        if ui.selectable_label(self.show_help, " ? ").on_hover_text("Shortcuts (F1)").clicked() {
-                            self.show_help = !self.show_help;
+                        ui.menu_button(" ? ", |ui| self.help_menu(ui));
+                        if let Some(rel) = self.update.clone() {
+                            let label = if self.updating { "Updating…".to_string() } else { format!("⬆ Update to build {}", rel.build) };
+                            let btn = egui::Button::new(RichText::new(label).color(Color32::BLACK)).fill(theme::ACCENT);
+                            let tip = if rel.notes.trim().is_empty() { rel.title.clone() } else { format!("{}\n\n{}", rel.title, rel.notes.trim()) };
+                            if ui.add_enabled(!self.updating, btn).on_hover_text(tip).clicked() {
+                                self.updating = true;
+                                self.workers.install_update(rel);
+                            }
                         }
                         ui.menu_button("Panels", |ui| self.panels_menu(ui));
                         ui.separator();

@@ -1,7 +1,11 @@
 name: build
 on:
   push:
+    branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -11,9 +15,14 @@ jobs:
         include:
           - os: windows-latest
             bin: viewer.exe
+            asset: viewer.exe
           - os: ubuntu-latest
             bin: viewer
+            asset: viewer-linux-x86_64
     runs-on: ${{ matrix.os }}
+    env:
+      # Baked into the binary so the in-app updater knows which build it is.
+      VIEWER_BUILD: ${{ github.run_number }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -22,7 +31,41 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libx11-dev libgl1-mesa-dev
       - run: cargo test --release
       - run: cargo build --release
+      - name: Package with checksum
+        shell: bash
+        run: |
+          mkdir dist
+          cp "target/release/${{ matrix.bin }}" "dist/${{ matrix.asset }}"
+          cd dist && sha256sum "${{ matrix.asset }}" > "${{ matrix.asset }}.sha256"
       - uses: actions/upload-artifact@v4
         with:
           name: viewer-${{ runner.os }}
-          path: target/release/${{ matrix.bin }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTES: ${{ github.event.head_commit.message }}
+        run: |
+          gh release create "build-${{ github.run_number }}" dist/* \
+            --repo "${{ github.repository }}" \
+            --title "Viewer build ${{ github.run_number }}" \
+            --notes "${NOTES:-Manual build}" \
+            --latest
+      - name: Keep the 10 newest releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release list --repo "${{ github.repository }}" --limit 100 --json tagName,createdAt \
+            --jq 'sort_by(.createdAt) | reverse | .[10:] | .[].tagName' |
+          while read -r tag; do
+            gh release delete "$tag" --repo "${{ github.repository }}" --yes --cleanup-tag
+          done

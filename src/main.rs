@@ -29,6 +29,7 @@ mod panels;
 mod presets;
 mod settings;
 mod theme;
+mod updater;
 
 use std::path::PathBuf;
 
@@ -40,6 +41,8 @@ USAGE:
   viewer --unregister               remove the file associations
   viewer --study IMAGE [OUT] [K]    headless: write every study view, a palette card
                                      and mixing recipes for K colours (default 8) to OUT
+  viewer --update                    download and install the newest build
+  viewer --version
   viewer --help
 ";
 
@@ -58,8 +61,35 @@ fn report(msg: &str, ok: bool) {
 }
 
 fn main() -> std::process::ExitCode {
+    updater::cleanup();
     let args: Vec<String> = std::env::args().skip(1).collect();
     match args.first().map(String::as_str) {
+        Some("--version" | "-V") => {
+            println!("Viewer {}", updater::version_label());
+            return std::process::ExitCode::SUCCESS;
+        }
+        Some("--update") => {
+            return match updater::check() {
+                Ok(Some(rel)) => match updater::install(&rel) {
+                    Ok(_) => {
+                        report(&format!("Updated to build {}.", rel.build), true);
+                        std::process::ExitCode::SUCCESS
+                    }
+                    Err(e) => {
+                        report(&e, false);
+                        std::process::ExitCode::FAILURE
+                    }
+                },
+                Ok(None) => {
+                    report(&format!("Viewer is up to date ({}).", updater::version_label()), true);
+                    std::process::ExitCode::SUCCESS
+                }
+                Err(e) => {
+                    report(&e, false);
+                    std::process::ExitCode::FAILURE
+                }
+            };
+        }
         Some("--help" | "-h" | "/?") => {
             println!("{HELP}");
             return std::process::ExitCode::SUCCESS;

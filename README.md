@@ -4,12 +4,25 @@ A fast, minimal image viewer for painters. It browses folders like Adobe Bridge,
 
 One ~12 MB Rust binary (egui). No runtime, no Electron.
 
+## Updates
+
+Every change pushed to GitHub is built automatically and published on the repo's **Releases** page
+(`build-N`, with `viewer.exe`, the Linux binary and SHA-256 checksums).
+
+Viewer checks for a newer build when it starts (at most every 6 hours). When one exists, an
+**⬆ Update to build N** button appears in the toolbar: click it and Viewer downloads the new
+version, verifies its checksum, replaces itself and restarts on the same image. You can also use
+**? → Check for updates**, or run `viewer --update`. Turn the automatic check off in the **?** menu.
+
+Keep `viewer.exe` in a folder you can write to (e.g. `C:\Tools\Viewer`), not Program Files.
+
 ## Install
 
 ### Windows
-1. Install Rust from https://rustup.rs (default options).
-2. In this folder: `cargo build --release`
-3. Copy `target\release\viewer.exe` somewhere permanent, e.g. `C:\Tools\Viewer\viewer.exe`.
+1. Download `viewer.exe` from the latest release on the **Releases** page
+   (or build it: install Rust from https://rustup.rs, then `cargo build --release`).
+2. Put it somewhere permanent you can write to, e.g. `C:\Tools\Viewer\viewer.exe`.
+3. (Optional, for SmartScreen) right-click → Properties → tick *Unblock*.
 4. Make it the default viewer: run `viewer.exe --register` (or right-click the canvas → *Make Viewer the default image viewer*). Windows then opens Settings → Default apps → Viewer; click **Set default**. Windows requires this last click from you; no program may take it over silently.
 5. To undo: `viewer.exe --unregister`.
 
