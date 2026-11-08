@@ -16,7 +16,7 @@ jobs:
           - os: windows-latest
             bin: viewer.exe
             asset: viewer.exe
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             bin: viewer
             asset: viewer-linux-x86_64
     runs-on: ${{ matrix.os }}
