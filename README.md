@@ -20,32 +20,82 @@ Alternatively push this folder to GitHub: the included workflow (`.github/workfl
 2. `viewer --register` writes `~/.local/share/applications/io.github.pink_bourbon_estate.Viewer.desktop` and runs `xdg-mime default` for every image type (needs `xdg-utils`).
 3. To undo: `viewer --unregister`, then pick another viewer in your desktop settings.
 
-## Using it
+## Layout
+
+Bridge-style browser on the left, the image on the right, panels docked around them.
+
+- **Centre:** `Grid`, `Split` (browser + viewer) or `Viewer` (V cycles). Drag the divider to resize.
+- **Folder tabs** under the toolbar, like a browser: `+` / Ctrl+T for a new tab, middle-click or `×` to close.
+- **Panels:** Folders, Metadata, Develop, Colours, Composition, Art views, Export. They sit in four stacks
+  (left top/bottom, right top/bottom). Click a tab to switch; **right-click a tab to move it** to another stack or hide it;
+  *Panels* (top right) shows hidden ones or resets the layout. Tab hides every panel.
+
+## Browsing (Bridge)
+
+- **Folders panel:** favourites (☆ next to the path pins a folder), collections, and a folder tree.
+- **Toolbar:** back / forward / up, clickable path, **Subfolders** (show every image below this folder), search (names and keywords).
+- **Content:** tiles, thumbnails only, or details list (sortable columns); `− slider +` or Ctrl+wheel to zoom thumbnails;
+  sort by name, date, size, rating or type; filter by minimum stars. Folders show as tiles: double-click to go in.
+- **Metadata panel:** star rating, keywords (with suggestions), collection membership, file properties and camera EXIF.
+  Applies to the whole selection. Stored in `library.json` in the config folder.
+
+## Develop (presets and adjustments)
+
+- **Looks:** category cards (Black & White, Kodak, Fuji, Ilford, Leica, Agfa, Cinema, Instant & Vintage, plus your own).
+  Each preset shows a live preview on the current image; click to apply, then set its **strength**.
+- 41 built-in film emulations (Portra 160/400/800, Ektar, Gold, Kodachrome, Ektachrome, Tri-X, T-Max, Pro 400H, 160NS,
+  Superia, Velvia, Provia, Astia, Classic Chrome / Negative, Acros, HP5, Delta 3200, FP4, Pan F, XP2, Leica looks,
+  Agfa Vista / APX, CineStill 800T / 50D, Vision3 500T, Eterna, Teal & Orange, Bleach Bypass, Polaroid, Instax,
+  Autochrome, Expired) — built from published descriptions of each stock; the values live in `tools/gen_film_presets.py`.
+- **Adjust:** light (exposure, contrast, highlights, shadows, whites, blacks), colour (temperature, tint, vibrance, saturation),
+  effects (clarity, dehaze, fade, vignette, grain), **curves** (RGB + R/G/B, drag points), HSL colour mixer, colour grading,
+  black & white mixer, calibration. Double-click a slider to reset it.
+- **Save as new preset** forks the current settings into *My presets* (or any category). Copy / Paste settings between images.
+- **Import preset folder…** reads a folder of Lightroom presets (`.xmp`, `.lrtemplate`) and `.cube` LUTs, skips
+  non-look presets (sharpening, noise, lens, brushes) and camera profiles, groups near-identical looks by how they change
+  a colour chart, and keeps about 45 averaged presets — saved inside Viewer, so the original folder can be deleted.
+  Same thing from the command line: `viewer --condense <folder> out.json 45`.
+- Edits are non-destructive until you save. **Split (S)** compares original and edit.
+
+## Composition, art views, export
+
+- **Composition:** RGB + luminance histogram with clipping and value zones; overlays (rule of thirds, golden ratio,
+  centre, quarters, diagonals, dynamic-symmetry armature, square grid) in any colour/opacity; squint blur; mirror.
+- **Art views (0–8):** original, B&W, value steps, notan, grisaille (burnt umber + ultramarine), simplify, blocks,
+  paint-by-number, line art — applied on top of any look.
+- **Export:** crop (free or fixed ratio; drag corners or move), straighten slider or **Level by line**, rotate 90°, flip;
+  save a copy (`_edit` suffix), save as, or overwrite; JPEG quality and long-edge resize; apply the current look to
+  every selected image at once. Batch rename / convert is still on Ctrl+B.
+
+## Keys
 
 | Key | Action |
 | --- | --- |
-| ← → / Space / Backspace | previous / next image in the folder |
+| ← → / Space | previous / next image · ↑ ↓ move by row in the grid |
+| Alt+← → ↑ / Backspace | back / forward / up a folder |
+| Enter / double-click | open folder, or switch to the viewer |
+| V · Tab · F11 | grid / split / viewer · hide panels · full screen |
+| Ctrl+T / Ctrl+W | new tab / close tab |
+| Ctrl+0…5 | star rating |
 | Wheel · drag · double-click | zoom at cursor · pan · fit ↔ 100% |
 | F / Z | fit / actual size |
-| 0–8 | Original, B&W, Value steps, Notan, Grisaille, Simplify, Blocks, Paint-by-number, Line art |
-| S | split compare — drag the divider between original and study |
-| M / G / Q | mirror · grid (thirds / quarters / squares) · squint blur |
+| 0–8 | art views |
+| S | split compare original ↔ edit |
+| G / Shift+G | thirds / golden-ratio overlay |
+| M / Q / T | mirror / squint / always on top |
+| C | crop tool (Enter to finish) |
 | I or Ctrl+click | pipette: sample any spot and get its mix |
-| T | always on top (float a reference over your painting app) |
-| Tab | hide all panels · B / C toggle browser / colour panel · F11 full screen |
+| Ctrl+Shift+C / V | copy / paste develop settings |
+| Ctrl+E | save an edited copy |
 | Ctrl+R / Ctrl+L | rotate file(s) right / left |
-| F2 · Del | rename · move to recycle bin |
-| Ctrl+B | batch: rotate, flip, resize, convert, rename (`study_{n:3}`), into a subfolder or in place |
-| Ctrl+E | export the current study view at full size (paint-by-number numbers burned in) |
+| F2 · Del · F5 | rename · recycle bin · refresh |
+| Ctrl+B | batch rotate / resize / convert / rename |
 | Right-click | everything else |
-
-Click a colour card to **isolate** that colour on the canvas.
 
 ### Headless study export
 ```
 viewer --study painting.jpg out_folder 10
 ```
-Writes every study view, a numbered palette card and `*_recipes.txt` for 10 colours.
 
 ## The colour panel
 

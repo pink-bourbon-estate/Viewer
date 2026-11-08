@@ -1,9 +1,12 @@
-//! Background decoding: full images and thumbnails, plus the analysis worker
-//! (palette extraction, recipes, study renders). Nothing here blocks the UI.
+//! Background work: decoding, folder listing, thumbnails, analysis, the
+//! develop + study render, preset previews, batch/export and preset import.
+//! Nothing here blocks the UI thread.
 
+use crate::develop::Develop;
 use crate::extract::{extract, Swatch};
 use crate::filters::{render, work_copy, Mode, NumberLabel, Params};
 use crate::palette::{Recipe, Solver};
+use crate::presets::Preset;
 use image::{DynamicImage, ImageDecoder, ImageReader, RgbaImage};
 use std::path::{Path, PathBuf};
 use std::sync::mpsc::{channel, Receiver, Sender};
@@ -28,7 +31,6 @@ pub struct Loaded {
     pub path: PathBuf,
     pub full: Arc<RgbaImage>,
     pub work: Arc<RgbaImage>,
-    /// Display copy, already shrunk to the GPU's maximum texture size.
     pub display: RgbaImage,
 }
 
@@ -39,19 +41,57 @@ pub struct Analysis {
     pub recipes: Vec<Recipe>,
 }
 
-pub struct Study {
+#[derive(Clone)]
+pub struct Hist {
+    pub r: Vec<u32>,
+    pub g: Vec<u32>,
+    pub b: Vec<u32>,
+    pub l: Vec<u32>,
+}
+
+impl Hist {
+    pub fn of(img: &RgbaImage) -> Hist {
+        let mut h = Hist { r: vec![0; 256], g: vec![0; 256], b: vec![0; 256], l: vec![0; 256] };
+        for p in img.pixels().step_by(2) {
+            h.r[p[0] as usize] += 1;
+            h.g[p[1] as usize] += 1;
+            h.b[p[2] as usize] += 1;
+            let l = (0.2126 * p[0] as f32 + 0.7152 * p[1] as f32 + 0.0722 * p[2] as f32) as usize;
+            h.l[l.min(255)] += 1;
+        }
+        h
+    }
+}
+
+pub struct Processed {
     pub generation: u64,
-    pub image: RgbaImage,
+    /// None = nothing to show beyond the original.
+    pub image: Option<RgbaImage>,
     pub labels: Vec<NumberLabel>,
+    pub hist: Hist,
+}
+
+pub struct ProcessJob {
+    pub generation: u64,
+    pub work: Arc<RgbaImage>,
+    pub scale: f32,
+    pub develop: Develop,
+    pub mode: Mode,
+    pub params: Params,
+    pub swatches: Vec<Swatch>,
+    pub isolate: Option<usize>,
 }
 
 pub enum Msg {
     Full { generation: u64, result: Result<Loaded, (PathBuf, String)> },
-    Thumb { path: PathBuf, result: Result<RgbaImage, String> },
+    Thumb { path: PathBuf, result: Result<(RgbaImage, (u32, u32)), String> },
+    Listing { generation: u64, entries: Vec<crate::library::Entry> },
     Analysis(Analysis),
-    Study(Study),
+    Processed(Processed),
     Pinned { rgb: [u8; 3], recipe: Recipe },
+    PresetThumbs { generation: u64, items: Vec<(String, RgbaImage)> },
     BatchDone(Result<String, String>),
+    Imported(Result<(Vec<Preset>, usize), String>),
 }
 
 #[derive(Clone)]
@@ -71,10 +111,7 @@ impl Workers {
             .thread_name(|i| format!("thumb-{i}"))
             .build()
             .map_err(|e| e.to_string())?;
-        Ok((
-            Workers { tx, ctx, thumbs: Arc::new(thumbs), solver: Arc::new(Mutex::new(Arc::new(solver))) },
-            rx,
-        ))
+        Ok((Workers { tx, ctx, thumbs: Arc::new(thumbs), solver: Arc::new(Mutex::new(Arc::new(solver))) }, rx))
     }
 
     fn send(&self, m: Msg) {
@@ -128,13 +165,42 @@ impl Workers {
             let result = decode(&path).map(|img| {
                 let (w, h) = img.dimensions();
                 let s = size as f32 / w.max(h).max(1) as f32;
-                if s >= 1.0 {
+                let t = if s >= 1.0 {
                     img
                 } else {
                     image::imageops::thumbnail(&img, ((w as f32 * s) as u32).max(1), ((h as f32 * s) as u32).max(1))
-                }
+                };
+                (t, (w, h))
             });
             me.send(Msg::Thumb { path, result });
+        });
+    }
+
+    pub fn list(&self, generation: u64, dir: PathBuf, recursive: bool) {
+        let me = self.clone();
+        std::thread::spawn(move || {
+            let entries = crate::library::list(&dir, recursive);
+            me.send(Msg::Listing { generation, entries });
+        });
+    }
+
+    pub fn list_paths(&self, generation: u64, paths: Vec<PathBuf>) {
+        let me = self.clone();
+        std::thread::spawn(move || {
+            let entries = paths
+                .into_iter()
+                .filter_map(|p| {
+                    let md = std::fs::metadata(&p).ok()?;
+                    let modified = md
+                        .modified()
+                        .ok()
+                        .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+                        .map(|d| d.as_secs() as i64)
+                        .unwrap_or(0);
+                    Some(crate::library::Entry { path: p, is_dir: false, size: md.len(), modified })
+                })
+                .collect();
+            me.send(Msg::Listing { generation, entries });
         });
     }
 
@@ -151,11 +217,41 @@ impl Workers {
         });
     }
 
-    pub fn study(&self, generation: u64, work: Arc<RgbaImage>, mode: Mode, params: Params, sw: Vec<Swatch>, iso: Option<usize>) {
+    pub fn process(&self, job: ProcessJob) {
         let me = self.clone();
         std::thread::spawn(move || {
-            let r = render(&work, mode, &params, &sw, iso);
-            me.send(Msg::Study(Study { generation, image: r.image, labels: r.labels }));
+            let developed = if job.develop.is_identity() {
+                None
+            } else {
+                Some(crate::develop::apply(&job.work, &job.develop, job.scale))
+            };
+            let base: &RgbaImage = developed.as_ref().unwrap_or(&job.work);
+            let study = job.mode != Mode::Original || job.isolate.is_some() || job.params.squint > 0;
+            let (image, labels) = if study {
+                let r = render(base, job.mode, &job.params, &job.swatches, job.isolate);
+                (Some(r.image), r.labels)
+            } else {
+                (developed, Vec::new())
+            };
+            let hist = Hist::of(image.as_ref().unwrap_or(&job.work));
+            me.send(Msg::Processed(Processed { generation: job.generation, image, labels, hist }));
+        });
+    }
+
+    /// Render small previews of presets on the current image.
+    pub fn preset_thumbs(&self, generation: u64, work: Arc<RgbaImage>, list: Vec<Preset>) {
+        let me = self.clone();
+        std::thread::spawn(move || {
+            let (w, h) = work.dimensions();
+            let s = 150.0 / w.max(h).max(1) as f32;
+            let small = image::imageops::thumbnail(&*work, ((w as f32 * s) as u32).max(1), ((h as f32 * s) as u32).max(1));
+            let items = {
+                use rayon::prelude::*;
+                list.par_iter()
+                    .map(|p| (p.name.clone(), crate::develop::apply(&small, &p.dev, s * w as f32 / 2048.0)))
+                    .collect()
+            };
+            me.send(Msg::PresetThumbs { generation, items });
         });
     }
 
@@ -172,6 +268,14 @@ impl Workers {
         std::thread::spawn(move || {
             let r = crate::batch::run(&job, &progress);
             me.send(Msg::BatchDone(r));
+        });
+    }
+
+    pub fn import_presets(&self, dir: PathBuf, target: usize) {
+        let me = self.clone();
+        std::thread::spawn(move || {
+            let r = crate::presets::condense(&dir, target);
+            me.send(Msg::Imported(r));
         });
     }
 }
@@ -212,24 +316,6 @@ pub fn natural_cmp(a: &str, b: &str) -> std::cmp::Ordering {
             }
         }
     }
-}
-
-/// List images in a folder, naturally sorted.
-pub fn list_images(dir: &Path) -> Vec<PathBuf> {
-    let mut v: Vec<PathBuf> = std::fs::read_dir(dir)
-        .map(|rd| {
-            rd.filter_map(|e| e.ok())
-                .map(|e| e.path())
-                .filter(|p| p.is_file() && crate::assoc::is_image(p))
-                .collect()
-        })
-        .unwrap_or_default();
-    v.sort_by(|a, b| {
-        let an = a.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
-        let bn = b.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
-        natural_cmp(&an, &bn)
-    });
-    v
 }
 
 #[cfg(test)]

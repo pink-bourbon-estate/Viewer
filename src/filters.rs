@@ -7,7 +7,7 @@ use crate::palette::grisaille_lut;
 use image::RgbaImage;
 use rayon::prelude::*;
 
-pub const WORK_EDGE: u32 = 1600;
+pub const WORK_EDGE: u32 = 2048;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum Mode {

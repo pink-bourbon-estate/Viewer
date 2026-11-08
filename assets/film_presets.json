@@ -1,0 +1,2047 @@
+[
+ {
+  "name": "Portra 160",
+  "category": "Kodak",
+  "note": "Very low contrast, fine grain, soft natural skin; pastel highlights.",
+  "dev": {
+   "contrast": -18,
+   "highlights": -25,
+   "shadows": 18,
+   "temp": 4,
+   "vibrance": -8,
+   "saturation": -10,
+   "curve": [
+    [
+     0,
+     14
+    ],
+    [
+     64,
+     68
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     248
+    ]
+   ],
+   "hue": [
+    3,
+    -4,
+    -6,
+    18,
+    0,
+    -6,
+    0,
+    0
+   ],
+   "sat": [
+    -8,
+    -6,
+    -15,
+    -25,
+    -10,
+    -12,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    6,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "split_sh_hue": 200,
+   "split_sh_sat": 6,
+   "grain": 10
+  }
+ },
+ {
+  "name": "Portra 400",
+  "category": "Kodak",
+  "note": "Warm golden skin, bright low-contrast mids/highlights with firmer shadows; muted greens.",
+  "dev": {
+   "contrast": -10,
+   "highlights": -30,
+   "shadows": 12,
+   "temp": 8,
+   "tint": 2,
+   "vibrance": -5,
+   "saturation": -6,
+   "fade": 6,
+   "curve": [
+    [
+     0,
+     12
+    ],
+    [
+     50,
+     46
+    ],
+    [
+     128,
+     132
+    ],
+    [
+     200,
+     210
+    ],
+    [
+     255,
+     248
+    ]
+   ],
+   "hue": [
+    4,
+    -3,
+    -10,
+    22,
+    5,
+    -8,
+    0,
+    0
+   ],
+   "sat": [
+    -5,
+    -4,
+    -12,
+    -28,
+    -10,
+    -8,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    8,
+    6,
+    -4,
+    0,
+    -4,
+    0,
+    0
+   ],
+   "split_sh_hue": 195,
+   "split_sh_sat": 8,
+   "split_hi_hue": 45,
+   "split_hi_sat": 8,
+   "grain": 18
+  }
+ },
+ {
+  "name": "Portra 800",
+  "category": "Kodak",
+  "note": "Like Portra 400 but warmer, more contrast and more grain; good in low light.",
+  "dev": {
+   "contrast": 4,
+   "highlights": -25,
+   "shadows": 10,
+   "temp": 14,
+   "tint": 3,
+   "vibrance": -2,
+   "saturation": -4,
+   "curve": [
+    [
+     0,
+     10
+    ],
+    [
+     60,
+     54
+    ],
+    [
+     128,
+     132
+    ],
+    [
+     200,
+     212
+    ],
+    [
+     255,
+     246
+    ]
+   ],
+   "hue": [
+    4,
+    -4,
+    -8,
+    18,
+    4,
+    -6,
+    0,
+    0
+   ],
+   "sat": [
+    0,
+    2,
+    -10,
+    -20,
+    -8,
+    -6,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    6,
+    4,
+    -4,
+    0,
+    -6,
+    0,
+    0
+   ],
+   "split_sh_hue": 200,
+   "split_sh_sat": 10,
+   "split_hi_hue": 40,
+   "split_hi_sat": 10,
+   "grain": 32
+  }
+ },
+ {
+  "name": "Ektar 100",
+  "category": "Kodak",
+  "note": "Kodak's punchiest negative: high saturation, strong reds, deep blue skies, fine grain.",
+  "dev": {
+   "contrast": 18,
+   "highlights": -15,
+   "whites": 5,
+   "blacks": -8,
+   "vibrance": 18,
+   "saturation": 12,
+   "clarity": 8,
+   "hue": [
+    0,
+    -4,
+    0,
+    6,
+    0,
+    -4,
+    0,
+    0
+   ],
+   "sat": [
+    18,
+    10,
+    6,
+    10,
+    10,
+    20,
+    0,
+    0
+   ],
+   "lum": [
+    -4,
+    0,
+    0,
+    -4,
+    -6,
+    -12,
+    0,
+    0
+   ],
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "grain": 6
+  }
+ },
+ {
+  "name": "Gold 200",
+  "category": "Kodak",
+  "note": "Warm, yellow-golden consumer film; contrasty, highlights burn early, visible grain.",
+  "dev": {
+   "contrast": 12,
+   "highlights": -10,
+   "temp": 16,
+   "tint": 4,
+   "vibrance": 6,
+   "saturation": 6,
+   "curve": [
+    [
+     0,
+     6
+    ],
+    [
+     64,
+     58
+    ],
+    [
+     128,
+     134
+    ],
+    [
+     192,
+     210
+    ],
+    [
+     255,
+     252
+    ]
+   ],
+   "hue": [
+    2,
+    4,
+    -8,
+    14,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sat": [
+    6,
+    10,
+    14,
+    -10,
+    -6,
+    -6,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    4,
+    8,
+    0,
+    0,
+    -6,
+    0,
+    0
+   ],
+   "split_hi_hue": 50,
+   "split_hi_sat": 14,
+   "split_sh_hue": 30,
+   "split_sh_sat": 6,
+   "grain": 26
+  }
+ },
+ {
+  "name": "Ultramax 400",
+  "category": "Kodak",
+  "note": "Punchy, saturated and warm everyday film with noticeable grain.",
+  "dev": {
+   "contrast": 14,
+   "temp": 10,
+   "vibrance": 10,
+   "saturation": 10,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "hue": [
+    2,
+    0,
+    -6,
+    10,
+    0,
+    -4,
+    0,
+    0
+   ],
+   "sat": [
+    12,
+    8,
+    8,
+    -6,
+    0,
+    6,
+    0,
+    0
+   ],
+   "split_hi_hue": 45,
+   "split_hi_sat": 8,
+   "grain": 30
+  }
+ },
+ {
+  "name": "ColorPlus 200",
+  "category": "Kodak",
+  "note": "Budget warm film: yellowish cast, slightly green shadows, soft contrast.",
+  "dev": {
+   "contrast": 4,
+   "temp": 12,
+   "tint": -4,
+   "saturation": -2,
+   "fade": 8,
+   "curve": [
+    [
+     0,
+     10
+    ],
+    [
+     64,
+     67
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "hue": [
+    0,
+    2,
+    -6,
+    10,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sat": [
+    0,
+    4,
+    8,
+    -10,
+    -6,
+    -10,
+    0,
+    0
+   ],
+   "split_sh_hue": 120,
+   "split_sh_sat": 10,
+   "split_hi_hue": 55,
+   "split_hi_sat": 12,
+   "grain": 28
+  }
+ },
+ {
+  "name": "Kodachrome 64",
+  "category": "Kodak",
+  "note": "Iconic slide film: deep contrast, dark rich shadows, saturated reds, cyan-leaning blues.",
+  "dev": {
+   "contrast": 24,
+   "highlights": -20,
+   "shadows": -10,
+   "blacks": -15,
+   "temp": 4,
+   "vibrance": 10,
+   "saturation": 6,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     46
+    ],
+    [
+     128,
+     124
+    ],
+    [
+     192,
+     206
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "hue": [
+    -4,
+    -6,
+    -10,
+    12,
+    -8,
+    -12,
+    0,
+    0
+   ],
+   "sat": [
+    22,
+    8,
+    0,
+    -12,
+    4,
+    6,
+    0,
+    0
+   ],
+   "lum": [
+    -10,
+    0,
+    6,
+    -8,
+    -6,
+    -14,
+    0,
+    0
+   ],
+   "split_sh_hue": 210,
+   "split_sh_sat": 8,
+   "grain": 10
+  }
+ },
+ {
+  "name": "Ektachrome E100",
+  "category": "Kodak",
+  "note": "Clean modern slide film: neutral-cool, crisp contrast, clear blues, fine grain.",
+  "dev": {
+   "contrast": 16,
+   "highlights": -12,
+   "blacks": -6,
+   "temp": -6,
+   "vibrance": 10,
+   "saturation": 4,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "sat": [
+    4,
+    0,
+    0,
+    6,
+    10,
+    14,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    0,
+    0,
+    0,
+    -4,
+    -8,
+    0,
+    0
+   ],
+   "grain": 6
+  }
+ },
+ {
+  "name": "Tri-X 400",
+  "category": "Black & White",
+  "note": "Punchy B&W: darker shadows, glowing highlights, gritty grain.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 28,
+   "highlights": -10,
+   "whites": 10,
+   "blacks": -14,
+   "clarity": 12,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     46
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     212
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "gray_mix": [
+    10,
+    8,
+    0,
+    -10,
+    -10,
+    -18,
+    0,
+    0
+   ],
+   "grain": 40,
+   "grain_size": 30
+  }
+ },
+ {
+  "name": "T-Max 100",
+  "category": "Black & White",
+  "note": "Very fine-grained, smooth, slightly high contrast modern B&W.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 14,
+   "highlights": -8,
+   "blacks": -6,
+   "curve": [
+    [
+     0,
+     2
+    ],
+    [
+     64,
+     58
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     200
+    ],
+    [
+     255,
+     254
+    ]
+   ],
+   "gray_mix": [
+    4,
+    4,
+    0,
+    -4,
+    -6,
+    -8,
+    0,
+    0
+   ],
+   "grain": 8
+  }
+ },
+ {
+  "name": "Pro 400H",
+  "category": "Fuji",
+  "note": "Airy, pastel and cool: green-shifted mids, cyan shadows, soft highlights.",
+  "dev": {
+   "exposure": 0.15,
+   "contrast": -14,
+   "highlights": -30,
+   "shadows": 16,
+   "temp": -6,
+   "tint": -6,
+   "vibrance": -6,
+   "saturation": -8,
+   "fade": 8,
+   "curve": [
+    [
+     0,
+     16
+    ],
+    [
+     64,
+     69
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     246
+    ]
+   ],
+   "hue": [
+    0,
+    -6,
+    -18,
+    24,
+    -10,
+    -12,
+    0,
+    0
+   ],
+   "sat": [
+    -10,
+    -12,
+    -18,
+    -10,
+    6,
+    -12,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    6,
+    10,
+    6,
+    6,
+    0,
+    0,
+    0
+   ],
+   "split_sh_hue": 180,
+   "split_sh_sat": 14,
+   "split_hi_hue": 150,
+   "split_hi_sat": 6,
+   "cal_hue": [
+    0,
+    -10,
+    -8
+   ],
+   "grain": 16
+  }
+ },
+ {
+  "name": "Pro 160NS",
+  "category": "Fuji",
+  "note": "Natural, soft, slightly cool portrait film with gentle greens.",
+  "dev": {
+   "contrast": -12,
+   "highlights": -22,
+   "shadows": 12,
+   "temp": -4,
+   "tint": -3,
+   "saturation": -10,
+   "curve": [
+    [
+     0,
+     10
+    ],
+    [
+     64,
+     67
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "hue": [
+    0,
+    -4,
+    -12,
+    18,
+    -6,
+    -8,
+    0,
+    0
+   ],
+   "sat": [
+    -6,
+    -8,
+    -16,
+    -14,
+    0,
+    -8,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    6,
+    6,
+    4,
+    4,
+    0,
+    0,
+    0
+   ],
+   "split_sh_hue": 185,
+   "split_sh_sat": 8,
+   "grain": 10
+  }
+ },
+ {
+  "name": "Superia 400",
+  "category": "Fuji",
+  "note": "Consumer Fuji: green bias, magenta-leaning reds, decent contrast, visible grain.",
+  "dev": {
+   "contrast": 10,
+   "tint": -8,
+   "vibrance": 4,
+   "saturation": 4,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "hue": [
+    -8,
+    -4,
+    -10,
+    12,
+    0,
+    -6,
+    0,
+    0
+   ],
+   "sat": [
+    6,
+    0,
+    -4,
+    8,
+    6,
+    4,
+    0,
+    0
+   ],
+   "split_sh_hue": 150,
+   "split_sh_sat": 12,
+   "split_hi_hue": 70,
+   "split_hi_sat": 6,
+   "cal_hue": [
+    -6,
+    -10,
+    0
+   ],
+   "grain": 28
+  }
+ },
+ {
+  "name": "Velvia 50",
+  "category": "Fuji",
+  "note": "Ultra-saturated landscape slide film: deep blues and greens, strong contrast, magenta push.",
+  "dev": {
+   "contrast": 26,
+   "highlights": -18,
+   "blacks": -12,
+   "tint": 6,
+   "vibrance": 26,
+   "saturation": 22,
+   "clarity": 10,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     48
+    ],
+    [
+     128,
+     126
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     252
+    ]
+   ],
+   "hue": [
+    -6,
+    -6,
+    -10,
+    8,
+    0,
+    -6,
+    0,
+    0
+   ],
+   "sat": [
+    20,
+    10,
+    10,
+    24,
+    20,
+    26,
+    10,
+    10
+   ],
+   "lum": [
+    -8,
+    0,
+    0,
+    -14,
+    -10,
+    -18,
+    0,
+    0
+   ],
+   "cal_sat": [
+    10,
+    10,
+    14
+   ],
+   "grain": 6
+  }
+ },
+ {
+  "name": "Provia 100F",
+  "category": "Fuji",
+  "note": "Neutral, accurate slide film: clean colour, moderate contrast, fine grain.",
+  "dev": {
+   "contrast": 14,
+   "highlights": -12,
+   "blacks": -4,
+   "vibrance": 8,
+   "saturation": 4,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "sat": [
+    4,
+    0,
+    0,
+    8,
+    8,
+    10,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    0,
+    0,
+    -4,
+    -4,
+    -8,
+    0,
+    0
+   ],
+   "grain": 4
+  }
+ },
+ {
+  "name": "Astia 100F",
+  "category": "Fuji",
+  "note": "Soft slide film for skin: gentle contrast, smooth natural tones.",
+  "dev": {
+   "contrast": 4,
+   "highlights": -18,
+   "shadows": 8,
+   "vibrance": 2,
+   "saturation": -2,
+   "curve": [
+    [
+     0,
+     8
+    ],
+    [
+     60,
+     52
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     196,
+     204
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "sat": [
+    -2,
+    -6,
+    0,
+    4,
+    4,
+    6,
+    0,
+    0
+   ],
+   "lum": [
+    0,
+    6,
+    0,
+    0,
+    0,
+    -4,
+    0,
+    0
+   ],
+   "grain": 4
+  }
+ },
+ {
+  "name": "Classic Chrome",
+  "category": "Fuji",
+  "note": "Documentary look: low saturation, hard shadows, muted cyan-leaning skies.",
+  "dev": {
+   "contrast": 16,
+   "highlights": -20,
+   "shadows": -6,
+   "saturation": -22,
+   "temp": -2,
+   "curve": [
+    [
+     0,
+     4
+    ],
+    [
+     64,
+     52
+    ],
+    [
+     128,
+     126
+    ],
+    [
+     192,
+     200
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "hue": [
+    0,
+    -4,
+    -10,
+    10,
+    -10,
+    -14,
+    0,
+    0
+   ],
+   "sat": [
+    -6,
+    -10,
+    -20,
+    -26,
+    -20,
+    -24,
+    0,
+    0
+   ],
+   "lum": [
+    -6,
+    0,
+    0,
+    -6,
+    -6,
+    -10,
+    0,
+    0
+   ],
+   "split_sh_hue": 200,
+   "split_sh_sat": 8,
+   "grain": 12
+  }
+ },
+ {
+  "name": "Classic Negative",
+  "category": "Fuji",
+  "note": "Hard contrast, low saturation, cyan shadows and magenta-red highlights.",
+  "dev": {
+   "contrast": 22,
+   "highlights": -16,
+   "saturation": -14,
+   "tint": 4,
+   "curve": [
+    [
+     0,
+     6
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     248
+    ]
+   ],
+   "hue": [
+    -8,
+    -4,
+    -12,
+    16,
+    -6,
+    -10,
+    0,
+    0
+   ],
+   "sat": [
+    4,
+    -8,
+    -16,
+    -18,
+    -8,
+    -12,
+    0,
+    0
+   ],
+   "split_sh_hue": 185,
+   "split_sh_sat": 18,
+   "split_hi_hue": 20,
+   "split_hi_sat": 10,
+   "grain": 16
+  }
+ },
+ {
+  "name": "Eterna",
+  "category": "Cinema",
+  "note": "Fuji's cinema stock: flat, low saturation, soft highlights, ready for grading.",
+  "dev": {
+   "contrast": -22,
+   "highlights": -30,
+   "shadows": 18,
+   "saturation": -24,
+   "fade": 6,
+   "curve": [
+    [
+     0,
+     12
+    ],
+    [
+     64,
+     68
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     244
+    ]
+   ],
+   "split_sh_hue": 190,
+   "split_sh_sat": 8,
+   "grain": 8
+  }
+ },
+ {
+  "name": "Acros 100",
+  "category": "Black & White",
+  "note": "Fine-grained Fuji B&W: rich mid-tones, crisp, slightly elevated contrast.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 16,
+   "highlights": -10,
+   "blacks": -8,
+   "clarity": 6,
+   "gray_mix": [
+    12,
+    8,
+    4,
+    -12,
+    -14,
+    -20,
+    0,
+    0
+   ],
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     54
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     206
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "grain": 8
+  }
+ },
+ {
+  "name": "HP5 Plus",
+  "category": "Ilford",
+  "note": "Versatile B&W: long, smooth tonal range and forgiving mid contrast.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 8,
+   "highlights": -12,
+   "shadows": 6,
+   "curve": [
+    [
+     0,
+     6
+    ],
+    [
+     64,
+     60
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     200
+    ],
+    [
+     255,
+     252
+    ]
+   ],
+   "gray_mix": [
+    6,
+    4,
+    0,
+    -6,
+    -6,
+    -10,
+    0,
+    0
+   ],
+   "grain": 30
+  }
+ },
+ {
+  "name": "Delta 3200",
+  "category": "Ilford",
+  "note": "Night-street B&W: heavy grain, punchy contrast, inky shadows.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 24,
+   "blacks": -18,
+   "whites": 8,
+   "clarity": 10,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "gray_mix": [
+    4,
+    4,
+    0,
+    -4,
+    -4,
+    -6,
+    0,
+    0
+   ],
+   "grain": 60,
+   "grain_size": 40
+  }
+ },
+ {
+  "name": "FP4 Plus",
+  "category": "Ilford",
+  "note": "Fine grain, classic medium contrast; great for landscapes.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 12,
+   "highlights": -10,
+   "blacks": -4,
+   "gray_mix": [
+    8,
+    6,
+    4,
+    -8,
+    -10,
+    -16,
+    0,
+    0
+   ],
+   "grain": 12
+  }
+ },
+ {
+  "name": "Pan F Plus 50",
+  "category": "Ilford",
+  "note": "Ultra-fine grain, high contrast, deep blacks and bright whites.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 30,
+   "blacks": -20,
+   "whites": 14,
+   "clarity": 8,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     44
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     214
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "gray_mix": [
+    10,
+    6,
+    0,
+    -8,
+    -10,
+    -14,
+    0,
+    0
+   ],
+   "grain": 4
+  }
+ },
+ {
+  "name": "XP2 Super",
+  "category": "Ilford",
+  "note": "Chromogenic B&W: soft, smooth, gentle contrast with very fine grain.",
+  "dev": {
+   "grayscale": true,
+   "contrast": -6,
+   "highlights": -16,
+   "shadows": 12,
+   "curve": [
+    [
+     0,
+     8
+    ],
+    [
+     64,
+     66
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "grain": 8
+  }
+ },
+ {
+  "name": "Leica Classic",
+  "category": "Leica",
+  "note": "Rich micro-contrast, deep blacks, warm mid-tones and a gentle vignette.",
+  "dev": {
+   "contrast": 14,
+   "highlights": -14,
+   "blacks": -10,
+   "clarity": 12,
+   "temp": 4,
+   "vibrance": 4,
+   "saturation": -4,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     52
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     204
+    ],
+    [
+     255,
+     252
+    ]
+   ],
+   "sat": [
+    6,
+    0,
+    -6,
+    -10,
+    -6,
+    -6,
+    0,
+    0
+   ],
+   "vignette": -14,
+   "grain": 6
+  }
+ },
+ {
+  "name": "Leica Chrome",
+  "category": "Leica",
+  "note": "Muted slide-like colour with firm contrast and cool shadows.",
+  "dev": {
+   "contrast": 18,
+   "highlights": -18,
+   "saturation": -16,
+   "clarity": 8,
+   "split_sh_hue": 210,
+   "split_sh_sat": 10,
+   "sat": [
+    -4,
+    -6,
+    -14,
+    -18,
+    -10,
+    -10,
+    0,
+    0
+   ],
+   "vignette": -10,
+   "grain": 6
+  }
+ },
+ {
+  "name": "Leica Monochrom",
+  "category": "Leica",
+  "note": "Deep, rich monochrome with smooth highlight roll-off.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 18,
+   "highlights": -16,
+   "blacks": -12,
+   "clarity": 10,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     206
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "gray_mix": [
+    8,
+    6,
+    2,
+    -6,
+    -8,
+    -12,
+    0,
+    0
+   ],
+   "vignette": -12,
+   "grain": 10
+  }
+ },
+ {
+  "name": "Vista 200",
+  "category": "Agfa",
+  "note": "Warm consumer film with punchy reds and slightly green-blue shadows.",
+  "dev": {
+   "contrast": 12,
+   "temp": 8,
+   "vibrance": 8,
+   "saturation": 6,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "hue": [
+    -4,
+    0,
+    -4,
+    10,
+    0,
+    0,
+    0,
+    0
+   ],
+   "sat": [
+    20,
+    8,
+    4,
+    -4,
+    0,
+    4,
+    0,
+    0
+   ],
+   "split_sh_hue": 170,
+   "split_sh_sat": 10,
+   "grain": 24
+  }
+ },
+ {
+  "name": "Agfacolor Vintage",
+  "category": "Agfa",
+  "note": "Old Agfacolor prints: faded, warm-magenta cast, soft contrast.",
+  "dev": {
+   "contrast": -6,
+   "temp": 10,
+   "tint": 10,
+   "saturation": -12,
+   "fade": 14,
+   "curve": [
+    [
+     0,
+     22
+    ],
+    [
+     64,
+     71
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     238
+    ]
+   ],
+   "split_sh_hue": 280,
+   "split_sh_sat": 10,
+   "split_hi_hue": 40,
+   "split_hi_sat": 16,
+   "grain": 26
+  }
+ },
+ {
+  "name": "APX 100",
+  "category": "Agfa",
+  "note": "Classic Agfa B&W: neutral, medium contrast, fine grain.",
+  "dev": {
+   "grayscale": true,
+   "contrast": 10,
+   "highlights": -8,
+   "gray_mix": [
+    6,
+    4,
+    0,
+    -6,
+    -6,
+    -10,
+    0,
+    0
+   ],
+   "grain": 14
+  }
+ },
+ {
+  "name": "CineStill 800T",
+  "category": "Cinema",
+  "note": "Tungsten-balanced cinema film at night: cool cast, teal shadows, warm skin.",
+  "dev": {
+   "contrast": 8,
+   "highlights": -20,
+   "temp": -22,
+   "tint": 4,
+   "saturation": -4,
+   "curve": [
+    [
+     0,
+     8
+    ],
+    [
+     60,
+     52
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     196,
+     204
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "hue": [
+    6,
+    0,
+    -10,
+    10,
+    -6,
+    -8,
+    0,
+    0
+   ],
+   "sat": [
+    12,
+    6,
+    -10,
+    -16,
+    6,
+    4,
+    0,
+    0
+   ],
+   "split_sh_hue": 190,
+   "split_sh_sat": 18,
+   "split_hi_hue": 25,
+   "split_hi_sat": 10,
+   "grain": 34
+  }
+ },
+ {
+  "name": "CineStill 50D",
+  "category": "Cinema",
+  "note": "Clean daylight cinema film: crisp, slightly cool, fine grain.",
+  "dev": {
+   "contrast": 10,
+   "highlights": -16,
+   "temp": -4,
+   "vibrance": 6,
+   "curve": [
+    [
+     0,
+     8
+    ],
+    [
+     60,
+     52
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     196,
+     204
+    ],
+    [
+     255,
+     250
+    ]
+   ],
+   "sat": [
+    4,
+    0,
+    0,
+    0,
+    6,
+    8,
+    0,
+    0
+   ],
+   "grain": 6
+  }
+ },
+ {
+  "name": "Vision3 500T",
+  "category": "Cinema",
+  "note": "Motion-picture look: soft roll-off, cool shadows, gentle warm highlights.",
+  "dev": {
+   "contrast": -4,
+   "highlights": -26,
+   "shadows": 10,
+   "temp": -10,
+   "saturation": -8,
+   "curve": [
+    [
+     0,
+     8
+    ],
+    [
+     64,
+     66
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     246
+    ]
+   ],
+   "split_sh_hue": 200,
+   "split_sh_sat": 14,
+   "split_hi_hue": 35,
+   "split_hi_sat": 10,
+   "grain": 22
+  }
+ },
+ {
+  "name": "Teal & Orange",
+  "category": "Cinema",
+  "note": "Blockbuster grade: warm skin against teal shadows and skies.",
+  "dev": {
+   "contrast": 14,
+   "highlights": -12,
+   "vibrance": 10,
+   "hue": [
+    0,
+    -4,
+    -20,
+    30,
+    10,
+    -10,
+    0,
+    0
+   ],
+   "sat": [
+    0,
+    10,
+    -20,
+    -30,
+    10,
+    10,
+    0,
+    0
+   ],
+   "split_sh_hue": 190,
+   "split_sh_sat": 24,
+   "split_hi_hue": 30,
+   "split_hi_sat": 18,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ]
+  }
+ },
+ {
+  "name": "Bleach Bypass",
+  "category": "Cinema",
+  "note": "Silver-retained print look: harsh contrast, crushed saturation, metallic sheen.",
+  "dev": {
+   "contrast": 34,
+   "highlights": -10,
+   "blacks": -10,
+   "saturation": -45,
+   "clarity": 18,
+   "curve": [
+    [
+     0,
+     0
+    ],
+    [
+     64,
+     50
+    ],
+    [
+     128,
+     128
+    ],
+    [
+     192,
+     208
+    ],
+    [
+     255,
+     255
+    ]
+   ],
+   "grain": 14
+  }
+ },
+ {
+  "name": "Polaroid 600",
+  "category": "Instant & Vintage",
+  "note": "Instant print: lifted blacks, soft contrast, warm highlights, greenish shadows.",
+  "dev": {
+   "contrast": -12,
+   "highlights": -16,
+   "temp": 8,
+   "saturation": -14,
+   "fade": 18,
+   "curve": [
+    [
+     0,
+     30
+    ],
+    [
+     64,
+     74
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     236
+    ]
+   ],
+   "split_sh_hue": 140,
+   "split_sh_sat": 14,
+   "split_hi_hue": 45,
+   "split_hi_sat": 14,
+   "vignette": -12,
+   "grain": 8
+  }
+ },
+ {
+  "name": "Instax Mini",
+  "category": "Instant & Vintage",
+  "note": "Bright, slightly cool instant film with pastel colour.",
+  "dev": {
+   "exposure": 0.2,
+   "contrast": -8,
+   "highlights": -20,
+   "temp": -6,
+   "saturation": -6,
+   "fade": 10,
+   "curve": [
+    [
+     0,
+     18
+    ],
+    [
+     64,
+     70
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     245
+    ]
+   ],
+   "split_sh_hue": 200,
+   "split_sh_sat": 10,
+   "grain": 6
+  }
+ },
+ {
+  "name": "Autochrome",
+  "category": "Instant & Vintage",
+  "note": "Early colour plate: very soft, pastel, warm-faded with heavy texture.",
+  "dev": {
+   "contrast": -20,
+   "saturation": -30,
+   "temp": 10,
+   "fade": 22,
+   "curve": [
+    [
+     0,
+     34
+    ],
+    [
+     64,
+     75
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     230
+    ]
+   ],
+   "split_sh_hue": 30,
+   "split_sh_sat": 14,
+   "split_hi_hue": 60,
+   "split_hi_sat": 14,
+   "vignette": -18,
+   "grain": 40,
+   "grain_size": 45
+  }
+ },
+ {
+  "name": "Expired Film",
+  "category": "Instant & Vintage",
+  "note": "Out-of-date stock: colour shift to magenta/cyan, lifted blacks, coarse grain.",
+  "dev": {
+   "contrast": -6,
+   "temp": -4,
+   "tint": 14,
+   "saturation": -10,
+   "fade": 16,
+   "curve": [
+    [
+     0,
+     24
+    ],
+    [
+     64,
+     72
+    ],
+    [
+     192,
+     190
+    ],
+    [
+     255,
+     240
+    ]
+   ],
+   "split_sh_hue": 180,
+   "split_sh_sat": 18,
+   "split_hi_hue": 330,
+   "split_hi_sat": 12,
+   "grain": 38
+  }
+ }
+]

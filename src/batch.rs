@@ -65,6 +65,18 @@ pub struct BatchJob {
     pub start_number: u32,
     /// Write into this subfolder instead of overwriting originals.
     pub subfolder: String,
+    /// Added to the file name of each output (e.g. "_edit"); empty = none.
+    #[serde(default)]
+    pub suffix: String,
+    /// A look to bake in (Develop panel).
+    #[serde(skip)]
+    pub develop: Option<crate::develop::Develop>,
+    /// Crop / straighten / turns (Export panel; single image).
+    #[serde(skip)]
+    pub geometry: Option<crate::geom::Geometry>,
+    /// Write exactly here (single file "Save as…").
+    #[serde(skip)]
+    pub dest: Option<PathBuf>,
 }
 
 impl Default for BatchJob {
@@ -80,13 +92,23 @@ impl Default for BatchJob {
             rename: String::new(),
             start_number: 1,
             subfolder: String::new(),
+            suffix: String::new(),
+            develop: None,
+            geometry: None,
+            dest: None,
         }
     }
 }
 
 impl BatchJob {
     pub fn changes_pixels(&self) -> bool {
-        self.rotate != Rotate::None || self.flip_h || self.flip_v || self.max_edge > 0 || self.format != OutFormat::Keep
+        self.rotate != Rotate::None
+            || self.flip_h
+            || self.flip_v
+            || self.max_edge > 0
+            || self.format != OutFormat::Keep
+            || self.develop.as_ref().is_some_and(|d| !d.is_identity())
+            || self.geometry.as_ref().is_some_and(|g| !g.is_identity())
     }
 }
 
@@ -126,6 +148,14 @@ pub fn expand_name(pattern: &str, stem: &str, ext: &str, n: u32) -> String {
 
 fn transform(img: RgbaImage, job: &BatchJob) -> RgbaImage {
     use image::imageops;
+    let img = match &job.develop {
+        Some(d) if !d.is_identity() => crate::develop::apply(&img, d, 1.0),
+        _ => img,
+    };
+    let img = match &job.geometry {
+        Some(g) if !g.is_identity() => crate::geom::apply(&img, g),
+        _ => img,
+    };
     let mut img = match job.rotate {
         Rotate::None => img,
         Rotate::Cw90 => imageops::rotate90(&img),
@@ -194,14 +224,17 @@ pub fn run(job: &BatchJob, progress: &AtomicUsize) -> Result<String, String> {
             let src_ext = src.extension().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
             let ext = job.format.ext().map(str::to_string).unwrap_or(src_ext.clone());
             let new_stem = if job.rename.trim().is_empty() { stem.clone() } else { expand_name(job.rename.trim(), &stem, &ext, n) };
-            let dest = out_dir.join(format!("{new_stem}.{ext}"));
+            let dest = match &job.dest {
+                Some(d) => d.clone(),
+                None => out_dir.join(format!("{new_stem}{}.{ext}", job.suffix.trim())),
+            };
             if dest != *src && dest.exists() {
                 return Err(format!("{} already exists", dest.display()));
             }
             if job.changes_pixels() {
                 let img = transform(decode(src)?, job);
                 save(&img, &dest, job.jpeg_quality)?;
-                if job.subfolder.trim().is_empty() && dest != *src {
+                if job.subfolder.trim().is_empty() && job.suffix.trim().is_empty() && job.dest.is_none() && dest != *src {
                     // Converted/renamed in place: the old file goes to the recycle bin.
                     trash::delete(src).map_err(|e| e.to_string())?;
                 }
