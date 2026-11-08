@@ -1,0 +1,28 @@
+name: build
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            bin: viewer.exe
+          - os: ubuntu-latest
+            bin: viewer
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Linux build deps
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libx11-dev libgl1-mesa-dev
+      - run: cargo test --release
+      - run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: viewer-${{ runner.os }}
+          path: target/release/${{ matrix.bin }}

@@ -1,0 +1,33 @@
+[package]
+name = "viewer"
+version = "0.1.0"
+edition = "2024"
+description = "A fast PureRef-styled image viewer for painters: browse, batch-edit, and study colour, value and mixing."
+license = "MIT"
+
+[dependencies]
+eframe = { version = "0.37", default-features = false, features = ["glow", "default_fonts", "wayland", "x11"] }
+egui = "0.37"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp", "gif", "bmp", "tiff", "tga", "ico", "pnm", "qoi", "rayon"] }
+rayon = "1"
+rfd = "0.17"
+trash = "5"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+directories = "6"
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.55"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 4
+strip = true
+
+[profile.dev.package."*"]
+opt-level = 2
+
+[features]
+# Type-check the Windows registry code on Linux against a stub of winreg.
+mockwin = []
