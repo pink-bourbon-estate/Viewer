@@ -156,6 +156,10 @@ pub struct App {
     pub update: Option<crate::updater::Release>,
     pub updating: bool,
     pub checking_update: bool,
+    pub doc: Option<crate::docview::DocView>,
+    pub doc_gen: u64,
+    pub link_popup: Option<crate::docview::LinkPopup>,
+    pub last_edit: f64,
 }
 
 pub fn color32(c: [u8; 3]) -> Color32 {
@@ -259,6 +263,10 @@ impl App {
             update: None,
             updating: false,
             checking_update: false,
+            doc: None,
+            doc_gen: 0,
+            link_popup: None,
+            last_edit: 0.0,
         };
         // Quietly look for a newer build at most every 6 hours.
         let now = chrono::Utc::now().timestamp();
@@ -402,6 +410,7 @@ impl App {
         let sel_paths: Vec<PathBuf> = self.selection.iter().filter_map(|i| self.files.get(*i)).map(|e| e.path.clone()).collect();
         let q = self.tab().search.trim().to_lowercase();
         let min = self.s.min_rating;
+        let kind_filter = self.s.filter;
         let lib = &self.lib;
         let mut v: Vec<Entry> = self
             .all
@@ -409,6 +418,9 @@ impl App {
             .filter(|e| {
                 if e.is_dir {
                     return q.is_empty() || file_name(&e.path).to_lowercase().contains(&q);
+                }
+                if !kind_filter.accepts(crate::filetypes::kind(&e.path)) {
+                    return false;
                 }
                 if min > 0 && lib.rating(&e.path) < min {
                     return false;
@@ -477,6 +489,23 @@ impl App {
         }
         self.stash_edits();
         let path = entry.path;
+        if crate::filetypes::kind(&path) != crate::filetypes::Kind::Image {
+            self.current = Some(idx);
+            self.scroll_to_current = true;
+            if !self.selection.contains(&idx) || self.selection.len() <= 1 {
+                self.selection.clear();
+                self.selection.insert(idx);
+            }
+            self.anchor = Some(idx);
+            self.image_gen += 1;
+            self.img = None;
+            self.processed = None;
+            self.loading = None;
+            self.open_doc(path);
+            return;
+        }
+        self.save_doc_if_dirty();
+        self.doc = None;
         self.current = Some(idx);
         self.scroll_to_current = true;
         if !self.selection.contains(&idx) || self.selection.len() <= 1 {
@@ -559,6 +588,7 @@ impl App {
         }
         for j in [(pos + 1) % n, (pos + n - 1) % n] {
             if let Some(p) = imgs.get(j).and_then(|&i| self.files.get(i)).map(|e| e.path.clone())
+                && crate::filetypes::kind(&p) == crate::filetypes::Kind::Image
                 && !self.cache.iter().any(|c| c.path == p)
             {
                 self.workers.load_full(0, p, self.max_tex);
@@ -715,6 +745,25 @@ impl App {
                             }
                         }
                         Err(e) => self.toast(ctx, format!("Update failed: {e}")),
+                    }
+                }
+                Msg::Doc { generation, result } => self.doc_loaded(generation, result),
+                Msg::PdfPage { generation, page, scale, result } => {
+                    if let Ok(img) = result {
+                        self.pdf_page_done(ctx, generation, page, scale, img);
+                    }
+                }
+                Msg::ModelFrame { generation, img } => self.model_frame(ctx, generation, img),
+                Msg::Mentions { path, list } => self.mentions_done(path, list),
+                Msg::Blender(r) => {
+                    match r {
+                        Ok(p) => {
+                            self.toast(ctx, format!("Saved {}", file_name(&p)));
+                            let keep = self.doc.as_ref().map(|d| d.path().to_path_buf());
+                            self.pending_open = keep;
+                            self.refresh_listing();
+                        }
+                        Err(e) => self.toast(ctx, e),
                     }
                 }
                 Msg::Imported(r) => {
@@ -937,7 +986,8 @@ impl App {
         if pressed(Key::ArrowUp, Modifiers::ALT) {
             self.go_up();
         }
-        if pressed(Key::ArrowRight, none) || pressed(Key::Space, none) || pressed(Key::PageDown, none) {
+        let audio = matches!(self.doc, Some(crate::docview::DocView::Audio(..)));
+        if pressed(Key::ArrowRight, none) || (!audio && pressed(Key::Space, none)) || pressed(Key::PageDown, none) {
             self.step(1);
         }
         if pressed(Key::ArrowLeft, none) || pressed(Key::PageUp, none) {
@@ -1257,7 +1307,7 @@ impl App {
         ui.horizontal_centered(|ui| {
             let imgs = self.files.iter().filter(|e| !e.is_dir).count();
             let dirs = self.files.len() - imgs;
-            ui.label(RichText::new(format!("{imgs} images{}", if dirs > 0 { format!(", {dirs} folders") } else { String::new() })).color(theme::DIM));
+            ui.label(RichText::new(format!("{imgs} files{}", if dirs > 0 { format!(", {dirs} folders") } else { String::new() })).color(theme::DIM));
             if self.selection.len() > 1 {
                 ui.label(RichText::new(format!("{} selected", self.selection.len())).color(theme::ACCENT));
             }
@@ -1383,7 +1433,13 @@ impl eframe::App for App {
 
         egui::CentralPanel::no_frame().show(ui, |ui| match self.s.center {
             Center::Grid => self.content(ui),
-            Center::Viewer => self.canvas(ui),
+            Center::Viewer => {
+                if self.doc.is_some() {
+                    self.doc_ui(ui)
+                } else {
+                    self.canvas(ui)
+                }
+            }
             Center::Split => {
                 let w = ui.available_width();
                 egui::Panel::left("content_split")
@@ -1392,7 +1448,13 @@ impl eframe::App for App {
                     .size_range(160.0..=(w - 200.0).max(161.0))
                     .frame(egui::Frame::new().fill(theme::CANVAS))
                     .show(ui, |ui| self.content(ui));
-                egui::CentralPanel::no_frame().show(ui, |ui| self.canvas(ui));
+                egui::CentralPanel::no_frame().show(ui, |ui| {
+                    if self.doc.is_some() {
+                        self.doc_ui(ui)
+                    } else {
+                        self.canvas(ui)
+                    }
+                });
             }
         });
         self.dialogs(&ctx);
@@ -1400,6 +1462,7 @@ impl eframe::App for App {
     }
 
     fn on_exit(&mut self, _gl: Option<&eframe::glow::Context>) {
+        self.save_doc_if_dirty();
         self.s.save();
         self.lib.save_if_dirty();
     }

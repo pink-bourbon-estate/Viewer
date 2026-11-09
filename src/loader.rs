@@ -94,6 +94,11 @@ pub enum Msg {
     Imported(Result<(Vec<Preset>, usize), String>),
     UpdateChecked { manual: bool, result: Result<Option<crate::updater::Release>, String> },
     UpdateInstalled(Result<PathBuf, String>),
+    Doc { generation: u64, result: Result<crate::docview::DocContent, String> },
+    PdfPage { generation: u64, page: usize, scale: f32, result: Result<RgbaImage, String> },
+    ModelFrame { generation: u64, img: RgbaImage },
+    Mentions { path: PathBuf, list: Vec<crate::textdoc::Mention> },
+    Blender(Result<PathBuf, String>),
 }
 
 #[derive(Clone)]
@@ -270,6 +275,15 @@ impl Workers {
         std::thread::spawn(move || {
             let r = crate::batch::run(&job, &progress);
             me.send(Msg::BatchDone(r));
+        });
+    }
+
+    /// Run `f` on a worker thread and deliver its message.
+    pub fn run<F: FnOnce() -> Msg + Send + 'static>(&self, f: F) {
+        let me = self.clone();
+        std::thread::spawn(move || {
+            let m = f();
+            me.send(m);
         });
     }
 

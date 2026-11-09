@@ -219,6 +219,10 @@ pub struct Settings {
     pub export_suffix: String,
     pub auto_update: bool,
     pub last_update_check: i64,
+    pub filter: crate::filetypes::Filter,
+    pub md_mode: crate::textdoc::MdMode,
+    pub autosave: bool,
+    pub blender_path: String,
 }
 
 impl Default for Settings {
@@ -248,6 +252,10 @@ impl Default for Settings {
             export_suffix: "_edit".into(),
             auto_update: true,
             last_update_check: 0,
+            filter: crate::filetypes::Filter::All,
+            md_mode: crate::textdoc::MdMode::Split,
+            autosave: true,
+            blender_path: String::new(),
         }
     }
 }

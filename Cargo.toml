@@ -19,6 +19,14 @@ chrono = { version = "0.4", default-features = false, features = ["clock", "std"
 kamadak-exif = "0.6"
 ureq = { version = "3", features = ["platform-verifier"] }
 sha2 = "0.11"
+pulldown-cmark = { version = "0.13", default-features = false }
+symphonia = { version = "0.6", default-features = false, features = ["mp1", "mp2", "mp3", "flac", "vorbis", "ogg", "wav", "pcm", "aiff", "isomp4", "aac", "alac", "adpcm", "caf", "mkv"] }
+cpal = "0.18"
+hayro = "0.9"
+calamine = "0.38"
+gltf = { version = "1.4", default-features = false, features = ["import", "utils", "names"] }
+quick-xml = "0.41"
+zip = { version = "9", default-features = false, features = ["deflate"] }
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55"

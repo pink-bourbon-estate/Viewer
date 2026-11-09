@@ -1,8 +1,30 @@
 # Viewer
 
-A fast, minimal image viewer for painters. It browses folders like Adobe Bridge, views like PureRef, batch-edits like the old Windows Photo Viewer, and adds study tools: colour extraction with oil-paint mixing recipes, value studies, grisaille, notan, paint-by-number and line art.
+A fast, minimal viewer for images, documents, audio and 3D — and a study tool for painters. It browses folders like Adobe Bridge, views like PureRef, batch-edits like the old Windows Photo Viewer, and adds study tools: colour extraction with oil-paint mixing recipes, value studies, grisaille, notan, paint-by-number and line art.
 
 One ~12 MB Rust binary (egui). No runtime, no Electron.
+
+## Not just images
+
+The type filter (next to the sort menu) shows **All**, Images, Documents, Text & code, Audio or 3D.
+Non-image files open in the preview pane — quick to read, quick to edit, no big app needed.
+**Open in…** hands any file to its usual program; **Show in folder** finds it.
+
+| Type | In Viewer |
+| --- | --- |
+| Markdown (`.md`) | **Edit live** — Preview / Split / Edit, autosave, Ctrl+S, find & replace. `[[links]]` open notes in the same folder; notes elsewhere in the open folder tree show their location with *Open* / *Show in folder*; a missing note can be created. **Linked mentions** lists notes that link here. No vault indexing, so huge note folders stay fast. |
+| Text & code (`.txt .json .toml .yaml .js .rs .c …`) | Edit with syntax colouring, find & replace, autosave. Files changed by another program are noticed. |
+| Python (`.py`) | Edit, then **▶ Run** (Ctrl+Enter) with your installed Python; live output, Stop, arguments. |
+| CSV / TSV | Editable grid: click a cell, Enter to confirm, add rows/columns, Save. |
+| Excel / ODS (`.xlsx .xls .ods`) | Read-only sheets with tabs. |
+| Word (`.docx`) | Readable preview: headings, lists, tables, pictures. Editing stays in WordCraft / Word. |
+| PDF | Pages, zoom (Ctrl+wheel), fit width. |
+| Audio (`.mp3 .wav .flac .ogg .m4a .aac .aiff`) | Waveform, play/pause (Space), seek by clicking, loop, volume. Previews load up to 30 minutes. |
+| 3D (`.obj .stl .ply .gltf .glb .3mf`) | Orbit (drag), pan (right-drag), zoom (wheel), wireframe, Y-up toggle, size and triangle counts. Drawn on the CPU, so a bad model can't upset the graphics driver. |
+| 3D via Blender (`.fbx .abc .blend .dae .usd …`) | Blender converts them in the background (cached). **Export to .blend** saves a `.blend` next to the file. Viewer finds Blender automatically or via *Set Blender location…*. |
+| 3ds Max (`.max`) | Can't be opened outside 3ds Max — export from Max as FBX or OBJ. |
+
+Saving always goes through a temporary file, so a crash can't leave half a file.
 
 ## Updates
 

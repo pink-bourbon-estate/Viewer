@@ -179,7 +179,7 @@ fn hidden(p: &Path) -> bool {
     p.file_name().is_some_and(|n| n.to_string_lossy().starts_with('.'))
 }
 
-/// List a folder: subfolders + images; with `recursive`, every image below
+/// List a folder: subfolders + files; with `recursive`, every file below
 /// (depth ≤ 12, at most 50 000 files) and no folder entries.
 pub fn list(dir: &Path, recursive: bool) -> Vec<Entry> {
     let mut out = Vec::new();
@@ -190,7 +190,7 @@ pub fn list(dir: &Path, recursive: bool) -> Vec<Entry> {
                 if hidden(&p) {
                     continue;
                 }
-                if p.is_dir() || crate::assoc::is_image(&p) {
+                if p.is_dir() || p.is_file() {
                     if let Some(en) = entry(p) {
                         out.push(en);
                     }
@@ -211,7 +211,7 @@ pub fn list(dir: &Path, recursive: bool) -> Vec<Entry> {
                 if depth < 12 {
                     stack.push((p, depth + 1));
                 }
-            } else if crate::assoc::is_image(&p) {
+            } else if p.is_file() {
                 if let Some(en) = entry(p) {
                     out.push(en);
                 }

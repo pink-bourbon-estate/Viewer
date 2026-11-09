@@ -172,6 +172,16 @@ impl App {
                 }
                 ui.separator();
                 let mut changed = false;
+                let mut filt = self.s.filter;
+                egui::ComboBox::from_id_salt("kindfilter")
+                    .width(96.0)
+                    .selected_text(filt.label())
+                    .show_ui(ui, |ui| {
+                        for f in crate::filetypes::Filter::ALL {
+                            changed |= ui.selectable_value(&mut filt, f, f.label()).changed();
+                        }
+                    });
+                self.s.filter = filt;
                 let mut min = self.s.min_rating;
                 egui::ComboBox::from_id_salt("minrating")
                     .width(56.0)
@@ -594,6 +604,8 @@ impl App {
                                 let img_box = Rect::from_min_size(rect.min + vec2(5.0, 5.0), vec2(t, t));
                                 if e.is_dir {
                                     folder_icon(&p, img_box);
+                                } else if crate::filetypes::kind(&e.path) != crate::filetypes::Kind::Image {
+                                    App::file_badge(&p, img_box, &e.path);
                                 } else if let Some(tex) = self.request_thumb(&e.path, &mut want) {
                                     let ts = tex.size_vec2();
                                     let s = t / ts.x.max(ts.y);
@@ -671,6 +683,8 @@ impl App {
                         let ib = Rect::from_min_size(rect.min + vec2(4.0, 2.0), vec2(row_h - 4.0, row_h - 4.0));
                         if e.is_dir {
                             folder_icon(&p, ib);
+                        } else if crate::filetypes::kind(&e.path) != crate::filetypes::Kind::Image {
+                            App::file_badge(&p, ib, &e.path);
                         } else if let Some(tex) = self.request_thumb(&e.path, &mut want) {
                             let ts = tex.size_vec2();
                             let s = ib.width() / ts.x.max(ts.y);

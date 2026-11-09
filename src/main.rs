@@ -11,23 +11,29 @@
 
 mod app;
 mod assoc;
+mod audio;
 mod batch;
 mod browse;
 mod canvas;
+mod docview;
 mod color;
 mod develop;
 mod export;
 mod extract;
+mod filetypes;
 mod filters;
 mod geom;
 mod library;
 mod loader;
+mod model3d;
+mod office;
 #[cfg(feature = "mockwin")]
 mod mockwin;
 mod palette;
 mod panels;
 mod presets;
 mod settings;
+mod textdoc;
 mod theme;
 mod updater;
 
